@@ -5,10 +5,10 @@ export class WishList {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ default: true })
+  @Column({ default: '' })
   wish_text: string;
 
-  @Column({ default: true })
+  @Column({ default: false })
   is_completed: boolean;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
