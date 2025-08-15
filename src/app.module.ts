@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
@@ -8,6 +8,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 // ==== entities ====
 import { User } from './user/entity/user.entity';
 import { WishList } from './wish-list/entity/wish-list.entity';
+// import { JwtVarifyMiddleware } from './_middleware/jwt-varify/jwt-varify.middleware';
+// import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -30,4 +32,8 @@ import { WishList } from './wish-list/entity/wish-list.entity';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+  // configure(consumer: MiddlewareConsumer) {
+  //   consumer.apply(JwtVarifyMiddleware).forRoutes('wish-list');
+  // }
+}

@@ -12,6 +12,7 @@ import * as argon from 'argon2';
 import { LoginDto } from './dto/login.dto';
 import { error } from 'console';
 import { JwtService } from '@nestjs/jwt';
+import { jwtConstants } from './constant';
 
 @Injectable()
 export class AuthService {
@@ -68,7 +69,9 @@ export class AuthService {
 
       const { id, name } = user;
       const payload = { id, name };
-      const user_token = await this.jwtService.signAsync(payload);
+      const user_token = await this.jwtService.signAsync(payload, {
+        secret: jwtConstants.secret,
+      });
       console.log('user_token: ', user_token);
       return { id, name, email, user_token };
     } catch (error) {
