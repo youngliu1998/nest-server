@@ -2,6 +2,8 @@ import {
   Body,
   Controller,
   Get,
+  HttpCode,
+  HttpStatus,
   Post,
   Res,
   ValidationPipe,
@@ -20,20 +22,22 @@ export class AuthController {
     return this.authService.createUser(newUser);
   }
 
+  @HttpCode(HttpStatus.OK)
   @Post('login')
-  login(
+  async login(
     @Res({ passthrough: true }) res: Response,
     @Body(ValidationPipe) loginUser: LoginDto,
   ) {
-    const user = this.authService.login(loginUser);
-    if (!user) return { messge: 'Login fail' };
-    res.cookie('user_token', 'my default jwt secret', {
+    const user = await this.authService.login(loginUser);
+    const { id, name, email, user_token } = user;
+
+    res.cookie('user_token', user_token, {
       httpOnly: true,
       secure: false,
       maxAge: 3 * 60 * 60 * 1000, // 3 hours
     });
 
-    return { messge: 'Login successful', user };
+    return { message: 'Login successful', data: { id, name, email } };
   }
 
   @Get() // for test
