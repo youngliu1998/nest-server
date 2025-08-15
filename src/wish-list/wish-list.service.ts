@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { WishList } from './entity/wish-list.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreateWishDto } from './dto/wish-list.dto';
+import { CreateWishDto, deleteWishDto } from './dto/wish-list.dto';
 // import { Request } from 'express';
 
 @Injectable()
@@ -19,13 +19,30 @@ export class WishListService {
   }
 
   async createWish(newWish: CreateWishDto) {
-    const { wish_text, user_id } = newWish;
+    const { wishText, id } = newWish;
     console.log(newWish);
-    return this.wishListRepository
-      .createQueryBuilder()
-      .insert()
-      .into(WishList)
-      .values([{ wish_text, user_id }])
-      .execute();
+    try {
+      return this.wishListRepository
+        .createQueryBuilder()
+        .insert()
+        .into(WishList)
+        .values([{ wish_text: wishText, user_id: id }])
+        .execute();
+    } catch (error) {
+      throw new HttpException('Create wish failed', 400);
+    }
+  }
+
+  async deleteWish(id: number) {
+    try {
+      return this.wishListRepository
+        .createQueryBuilder()
+        .delete()
+        .from(WishList)
+        .where({ id })
+        .execute();
+    } catch {
+      throw new HttpException('Create wish failed', 400);
+    }
   }
 }

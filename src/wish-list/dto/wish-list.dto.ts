@@ -8,9 +8,21 @@ export class WishListDto {
 export class CreateWishDto {
   @IsString()
   @IsNotEmpty()
-  wish_text: string = '';
+  wishText: string = '';
 
   @IsInt()
   @IsNotEmpty()
-  user_id: number;
+  id: number;
+}
+
+export class CreateWishTextDto {
+  @IsString()
+  @IsNotEmpty()
+  wishText: string = '';
+}
+
+export class deleteWishDto {
+  @IsInt()
+  @IsNotEmpty()
+  id: number = 0;
 }

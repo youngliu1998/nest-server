@@ -1,15 +1,20 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  Param,
   Post,
-  Req,
   Request,
   UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
 import { WishListService } from './wish-list.service';
-import { CreateWishDto } from './dto/wish-list.dto';
+import {
+  CreateWishDto,
+  CreateWishTextDto,
+  deleteWishDto,
+} from './dto/wish-list.dto';
 // import type { Request } from 'express';
 import { AuthGuard } from 'src/auth/auth.guard';
 
@@ -26,8 +31,21 @@ export class WishListController {
     return { message: 'wish-list', data };
   }
 
+  @UseGuards(AuthGuard)
   @Post()
-  async createWish(@Body(ValidationPipe) newWish: CreateWishDto) {
+  async createWish(
+    @Body(ValidationPipe) newWishText: CreateWishTextDto,
+    @Request() req: any,
+  ) {
+    const { wishText } = newWishText;
+    const id: number = req.user.id;
+    const newWish = { id, wishText };
     return await this.wishListService.createWish({ ...newWish });
+  }
+
+  @UseGuards(AuthGuard)
+  @Delete(':id')
+  async deleteWish(@Param('id', ValidationPipe) id: number) {
+    return await this.wishListService.deleteWish(id);
   }
 }
