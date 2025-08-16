@@ -33,6 +33,29 @@ export class WishListService {
     }
   }
 
+  async updateWishStatus(id: number) {
+    try {
+
+      // ==== get is_completed from the wishItem
+
+      const wishItem: any = await this.wishListRepository.find({
+        where: { id },
+      });
+      const isCompleted = wishItem[0].is_completed;
+      console.log('isCompleted', isCompleted);
+
+      // ==== update the state ====
+      
+      return this.wishListRepository
+        .createQueryBuilder()
+        .update(WishList)
+        .set({ is_completed: !isCompleted })
+        .where({ id })
+        .execute();
+    } catch (error) {
+      throw new HttpException('update wish status failed', 400);
+    }
+  }
   async deleteWish(id: number) {
     try {
       return this.wishListRepository

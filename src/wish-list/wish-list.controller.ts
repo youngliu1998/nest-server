@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Request,
   UseGuards,
@@ -41,6 +42,12 @@ export class WishListController {
     const id: number = req.user.id;
     const newWish = { id, wishText };
     return await this.wishListService.createWish({ ...newWish });
+  }
+
+  @UseGuards(AuthGuard)
+  @Patch()
+  updateWishStatus(@Body() updateWish: any) {
+    return this.wishListService.updateWishStatus(updateWish.id);
   }
 
   @UseGuards(AuthGuard)
