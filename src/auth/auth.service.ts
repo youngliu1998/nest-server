@@ -70,7 +70,7 @@ export class AuthService {
       const { id, name } = user;
       const payload = { id, name };
       const user_token = await this.jwtService.signAsync(payload, {
-        secret: jwtConstants.secret,
+        secret: process.env.SECRETKEY,
       });
       console.log('user_token: ', user_token);
       return { id, name, email, user_token };

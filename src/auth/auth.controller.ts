@@ -41,6 +41,18 @@ export class AuthController {
     return { message: 'Login successful', data: { id, name, email } };
   }
 
+  @Post('logout')
+  @HttpCode(200)
+  logout(@Res({ passthrough: true }) res: Response) {
+    console.log('user_token clear');
+    res.clearCookie('user_token', {
+      httpOnly: true,
+      secure: false,
+      sameSite: 'lax',
+    });
+    return { message: 'Logout successful' };
+  }
+
   @Get() // for test
   find() {
     return this.authService.find();

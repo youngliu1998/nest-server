@@ -27,7 +27,7 @@ export class WishListController {
   @Get()
   async getWishList(@Request() req: any) {
     const id = req.user.id;
-    console.log('wishService user_id: ', id);
+    // console.log('wishService user_id: ', id);
     const data = await this.wishListService.getWishList(id);
     return { message: 'wish-list', data };
   }
