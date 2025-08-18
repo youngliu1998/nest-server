@@ -12,7 +12,6 @@ import * as argon from 'argon2';
 import { LoginDto } from './dto/login.dto';
 import { error } from 'console';
 import { JwtService } from '@nestjs/jwt';
-import { jwtConstants } from './constant';
 
 @Injectable()
 export class AuthService {
